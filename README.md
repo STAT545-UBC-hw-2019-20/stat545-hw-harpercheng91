@@ -15,3 +15,5 @@ I am the world's most indoorsy person you can ever find. And that gives me tons 
 Below, you can find one of my proudest doodles that I did for Paul McCartney while channeling my inner Beatlemania, just to show you how talentless I am. You may not know my face, but hopefully you can recognize this <del>piece of art</del> if you ever see me with my bkr water bottle.
 
 <img src="https://user-images.githubusercontent.com/54858618/64444765-c2def780-d089-11e9-80a8-a327d42c8856.jpeg" width="30%">
+
+*Learn more about me on [LinkedIn](https://www.linkedin.com/in/xiaolan-cheng-29a510159/)* 
