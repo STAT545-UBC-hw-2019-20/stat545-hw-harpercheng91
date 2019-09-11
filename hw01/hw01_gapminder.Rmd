@@ -1,0 +1,51 @@
+---
+title: "STAT545_Assignment 1"
+author: Xiaolan Harper Cheng
+output: 
+  github_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+In this R Markdown document, the dataset 'Gapminder' is briefly analyzed. 
+
+## Data Analysis
+
+Let us first load the dataset and explore the structure of it. It is described in
+the R documentation that 'gapminder' is an excerpt of the Gapminder data on life
+expectancy, GDP per capita, and population by country. 
+
+```{r load data}
+library(gapminder)
+?gapminder
+str(gapminder)
+```
+
+It is suggested by the internal structure that 'gapminder' is a data frame with 
+1704 observations and 6 variables which are country, continent, year, life expectancy, population, and GDP per capita. 
+
+Japanese people have the longest life expectancy, while Kuwait is the richest country.
+
+```{r }
+gapminder$country[gapminder$lifeExp==max(gapminder$lifeExp)]
+gapminder$country[gapminder$gdpPercap==max(gapminder$gdpPercap)]
+```
+
+Next, the relationship between life expectancy and GDP per capita are analyzed. 
+The scatter plot indicates that people in wealthier countries generally have longer
+life spans.
+
+```{r warning=FALSE}
+attach(gapminder)
+agg <- aggregate(gapminder, by=list(country), FUN=mean)
+scatter.smooth(y=agg$lifeExp, x=agg$gdpPercap, 
+               main="Relationship b/w life expectancy and GDP per capita", 
+               ylab="Life Expectancy", xlab="GDP per capita")
+```
+
+
