@@ -1,0 +1,25 @@
+---
+title: "Tibble"
+author: "Harper Cheng"
+date: "9/22/2019"
+output: html_document
+---
+
+# Tibble display
+
+Present numerical tables in a more attractive form using knitr::kable() for small tibbles (say, up to 10 rows), and DT::datatable() for larger tibbles.
+
+
+```{r small tibble}
+suppressPackageStartupMessages(library(gapminder))
+suppressPackageStartupMessages(library(dplyr))
+gapminder %>%
+  filter(country=="Afghanistan" & year %in% 1950:1980) %>% 
+  knitr::kable()
+```
+
+```{r large tibble}
+gapminder %>%
+  filter(year==1952) %>% 
+  DT::datatable()
+```
