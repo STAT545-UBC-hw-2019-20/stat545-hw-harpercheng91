@@ -2,7 +2,7 @@
 title: "STAT545 Homework 2"
 author: Xiaolan (Harper) Cheng
 output: 
-  html_document:
+  github_document:
     keep_md: true
     theme: journal
 ---
