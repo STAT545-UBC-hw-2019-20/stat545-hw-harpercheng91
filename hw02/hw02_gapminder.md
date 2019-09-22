@@ -1,10 +1,7 @@
 ---
 title: "STAT545 Homework 2"
 author: Xiaolan (Harper) Cheng
-output: 
-  github_document:
-    keep_md: true
-    theme: journal
+output: github_document
 ---
 
 **In this document, ggplot2 and dplyr functionalities are explored.**
