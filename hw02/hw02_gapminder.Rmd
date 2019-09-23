@@ -1,0 +1,134 @@
+---
+title: "STAT545 Homework 2"
+author: Xiaolan (Harper) Cheng
+output: github_document
+---
+
+**In this document, ggplot2 and dplyr functionalities are explored.**
+
+Load packages and dataset
+```{r, warning=FALSE}
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(gapminder))
+```
+
+
+# Exercise 1: Basic `dplyr`
+
+### 1.1 Use `filter()` to subset the `gapminder` data to three countries of your choice in the 1970’s.
+
+```{r 1.1}
+(gapminder_subset <- gapminder %>% 
+  filter(year < 1979 & year > 1970, 
+         country=='Afghanistan' | country== 'Albania' | country == 'Algeria'))
+```
+
+### 1.2 Use the pipe operator `%>%` to select “country” and “gdpPercap” from your filtered dataset in 1.1.
+
+```{r 1.2}
+gapminder_subset %>% 
+  select(country, gdpPercap)
+```
+
+### 1.3 Filter gapminder to all entries that have experienced a drop in life expectancy. Be sure to include a new variable that’s the increase in life expectancy in your tibble. Hint: you might find the `lag()` or `diff()` functions useful.
+
+```{r 1.3}
+gapminder %>%
+  mutate(lifeExp_gain = c(diff(gapminder$lifeExp), NA)) %>% 
+  filter(lifeExp_gain < 0)
+```
+
+### 1.4 Filter gapminder so that it shows the max GDP per capita experienced by each country.
+
+```{r 1.4}
+gapminder %>% 
+  group_by(country) %>% 
+  summarize(maxGDP = max(gdpPercap))
+```
+
+### 1.5 Produce a scatterplot of Canada’s life expectancy vs. GDP per capita using `ggplot2`, without defining a new variable. That is, after filtering the `gapminder` data set, pipe it directly into the `ggplot()` function. Ensure GDP per capita is on a log scale.
+
+```{r 1.5}
+gapminder %>%
+  filter(country == 'Canada') %>% 
+  select(lifeExp, gdpPercap) %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp)) +
+    scale_x_log10(labels=scales::dollar_format()) +
+      geom_point(alpha = 0.5) +
+      labs(y="Life Expectancy", x="GDP per capita on a log10 scale")
+
+```
+
+
+# Exercise 2: Explore individual variables with `dplyr`
+
+Pick one categorical variable (`continent`) and one quantitative variable (`gdpPercap`) to explore. Answer the following questions in whichever way you think is appropriate, using `dplyr`:
+
+### 1. What are possible values (or range, whichever is appropriate) of each variable?
+
+```{r categorical}
+gapminder %>%
+  group_by(continent) %>% 
+  summarize(num_countries = n_distinct(country))
+```
+For the categorical variable `continent`, there are five values, namely 'Africa', 'Americas', 'Asia', 'Europe', and 'Oceania'. Each variable records countries that are geographically belong to that continent. The above table shows the number of countries that are sampled from each continent.
+
+```{r quantitative}
+gapminder %>%
+  group_by(continent) %>% 
+  summarize(gdp_min = min(gdpPercap), gdp_max = max(gdpPercap))
+```
+The ranges of quantitative variable `gdpPercap` for each continent are showed in the above table.
+
+
+### 2. What values are typical? What’s the spread? What’s the distribution? Etc., tailored to the variable at hand.
+
+There are 52 countries in Africa, making Africa the most frequent occurring continent in `gapminder`. Now, in terms of `pop` variable: 
+
+```{r}
+gapminder %>%
+  ggplot(aes(x=gdpPercap)) +
+  geom_histogram(aes(y=..density..), col='black', fill='lightblue', bins=200) +
+  geom_density(alpha=0.5, col='red')
+```
+This is a right skewed distribution, indicating that for most countries in most of the time, GDP per capita was relatively low. The probability density function graph demonstrates a wide spread of data, where a few countries in some period of time had extremely high GDP per capita compared to others.
+
+
+# Exercise 3: Explore various plot types
+
+Make two plots that have some value to them. 
+
+```{r plots}
+gapminder %>%
+  filter(country=='Cuba') %>% 
+  ggplot(aes(x=lifeExp, y=gdpPercap)) +
+    geom_point(aes(size=pop), col='cornflowerblue') +
+      geom_text(aes(label=year), nudge_x = -1) +
+        labs(title="A Scatterplot on GDP and Life Expectancy of Cuba ", 
+             x="Life Expectancy", y="GDP per capita")
+
+gapminder %>% 
+  filter(country=='Cuba' | country=='Argentina' | country=='Brazil') %>% 
+  ggplot(aes(x=year, y=lifeExp, col=country)) +
+    geom_line(size=1.5) +
+      labs(title='A Boxplot on Life Expectancy Changes of Three South America Countries', 
+           x='Country', y='Life Expectancy')
+```
+
+
+# Recycling
+
+Evaluate this code and describe the result. Presumably the analyst’s intent was to get the data for Rwanda and Afghanistan. Did they succeed? Why or why not? If not, what is the correct way to do this?
+
+```{r orignal}
+filter(gapminder, country == c("Rwanda", "Afghanistan"))
+```
+
+They did NOT succeed in subsetting. The above code only managed to select half of the dataset that are supposed to be selected. The correct way to achieve the objective is as followed. 
+
+```{r modified}
+filter(gapminder, country=='Rwanda' | country=='Afghanistan')
+```
+
+
