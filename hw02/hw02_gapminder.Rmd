@@ -53,9 +53,11 @@ gapminder %>%
 gapminder %>%
   filter(country == 'Canada') %>% 
   select(lifeExp, gdpPercap) %>% 
-  ggplot(aes(x = lifeExp, y = log(gdpPercap))) +
-    geom_point(alpha = 0.5) +
-      labs(y="Log GDP per capita", x="Life Expectancy")
+  ggplot(aes(x = gdpPercap, y = lifeExp)) +
+    scale_x_log10(labels=scales::dollar_format()) +
+      geom_point(alpha = 0.5) +
+      labs(y="Life Expectancy", x="GDP per capita on a log10 scale")
+
 ```
 
 
@@ -119,35 +121,15 @@ gapminder %>%
 
 Evaluate this code and describe the result. Presumably the analyst’s intent was to get the data for Rwanda and Afghanistan. Did they succeed? Why or why not? If not, what is the correct way to do this?
 
-```{r}
+```{r orignal}
 filter(gapminder, country == c("Rwanda", "Afghanistan"))
 ```
 
 They did NOT succeed in subsetting. The above code only managed to select half of the dataset that are supposed to be selected. The correct way to achieve the objective is as followed. 
 
-```{r}
+```{r modified}
 filter(gapminder, country=='Rwanda' | country=='Afghanistan')
 ```
-
-
-# Tibble display
-
-Present numerical tables in a more attractive form using knitr::kable() for small tibbles (say, up to 10 rows), and DT::datatable() for larger tibbles.
-
-
-```{r small tibble}
-gapminder %>%
-  filter(country=="Afghanistan" & year %in% 1950:1980) %>% 
-  knitr::kable()
-```
-
-```{r large tibble}
-gapminder %>%
-  filter(year==1952) %>% 
-  DT::datatable()
-```
-
-
 
 
 
