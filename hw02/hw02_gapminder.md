@@ -217,7 +217,7 @@ filter(gapminder, country == c("Rwanda", "Afghanistan"))
     ## 11 Rwanda      Africa     1992    23.6  7290203      737.
     ## 12 Rwanda      Africa     2002    43.4  7852401      786.
 
-They did NOT succeed in subsetting. The above code only managed to select half of the dataset that are supposed to be selected. The correct way to achieve the objective is as followed.
+They did NOT succeed in subsetting. The above code only managed to select half of the dataset that is supposed to be selected. The correct way to achieve the objective is as followed.
 
 ``` r
 filter(gapminder, country=='Rwanda' | country=='Afghanistan')

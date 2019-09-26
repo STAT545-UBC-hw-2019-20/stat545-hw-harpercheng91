@@ -125,11 +125,10 @@ Evaluate this code and describe the result. Presumably the analyst’s intent wa
 filter(gapminder, country == c("Rwanda", "Afghanistan"))
 ```
 
-They did NOT succeed in subsetting. The above code only managed to select half of the dataset that are supposed to be selected. The correct way to achieve the objective is as followed. 
+They did NOT succeed in subsetting. The above code only managed to select half of the dataset that is supposed to be selected. The correct way to achieve the objective is as followed. 
 
 ```{r modified}
 filter(gapminder, country=='Rwanda' | country=='Afghanistan')
 ```
-
 
 
