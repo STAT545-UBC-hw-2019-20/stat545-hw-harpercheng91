@@ -1,0 +1,119 @@
+---
+title: "STAT545 Assignment 3"
+author: "Harper Cheng"
+date: "9/26/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load libraries and dataset
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(gapminder)
+library(tidyr)
+```
+
+## Task Option 1
+Report the absolute abundance of countries with low life expectancy over time by continent: Compute mean of worldwide life expectancy of each year. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.
+
+```{r}
+t1 <- gapminder %>%
+  group_by(year) %>% 
+  mutate(mu=mean(lifeExp)) %>% 
+  ungroup() %>% 
+  group_by(continent, year) %>% 
+  filter(lifeExp < mu)  
+
+# Produce a tibble display showing the number of countries on each continent having
+# life expectancies less than the benchmark.
+t1 %>%
+  summarize(n=n()) %>% 
+  DT::datatable()
+
+# Produce a line graph showing the number of countries with life expectancies below 
+# the worldwide average. The graph is grouped by continent. 
+t1 %>% 
+  mutate(num=n()) %>% 
+  ggplot(aes(x=year, y=num, color=continent)) +
+  geom_line(size=2) +
+  facet_wrap(~continent, scales="free")
+
+# The bubble plot shows the relative abundance of countries with life expectancies
+# below the worldwide average. The abundance is represented by the size of the bubble.
+# The graph is grouped by continent.
+t1 %>% 
+  mutate(num=n()) %>% 
+  ggplot(aes(x=year, y=lifeExp)) +
+  geom_point(aes(size=num, fill=continent), alpha=0.7, shape=21) +
+  facet_wrap(~continent, scale="free")
+
+```
+
+The number of countries with low life expectancy for Africa and Asia have been declining over the year, however, Africa still remains to be the continent with the most abundant countries below worldwide life expectancy. The statistic for Europe is very stable without any changes, while it fluctuated to some extent but has an overall decreasing trend for America. There was no countries in Oceania below worldwide life expectancy during the given years. Overall, less countries are below average life expectancy in recent years, indicating a change in the distribution of worldwide life expectancy. The bubble plot shows that Africa and Asia have greater number of such countries. And the general trend of life expectancy for each continent is increasing. 
+
+
+## Task Option 2
+Get the maximum and minimum of GDP per capita for all continents.
+
+```{r}
+t2 <- gapminder %>%
+  group_by(continent) %>% 
+  summarize(minGDP=min(gdpPercap), maxGDP=max(gdpPercap))
+
+# Produce a tibble display showing the maximum and minimum of GDP per capita for
+# all continents.
+t2 %>% 
+  knitr::kable()
+
+# A bar plot showing the maximum and minimum of GDP per capita for all continents.
+dat <- t2 %>% 
+  gather(MinMax, gdp, c(minGDP, maxGDP))
+
+ggplot(dat, aes(x=continent, y=gdp, fill=MinMax)) +
+   geom_col(position = "dodge") +
+   labs(title='Maximum and Minimum GDP per capita for Each Continent',
+          y='GDP per capita')+
+   scale_fill_brewer(palette="Set2")
+
+```
+The country with the highest GDP per capita is in Asia, while the one with the lowest is in Africa. The greatest difference between the maximum and the minimum is observed in Asia, and the smallest difference is observed in Oceania.
+
+
+## Task Option 3
+Look at the spread of GDP per capita within the continents.
+
+```{r}
+t3 <- gapminder %>% 
+  group_by(continent) 
+
+# tibble display
+t3 %>% 
+  summarize(IQR=IQR(gdpPercap), SD=sd(gdpPercap)) %>% 
+  knitr::kable()
+
+# Produce side-by-side boxplots to examine the spread for each continent.
+t3 %>%
+  ggplot(aes(x=continent, y=gdpPercap)) +
+  geom_boxplot(aes(fill=continent)) +
+  labs(title='Boxplot for the Spread of GDP per capita Within Each Continent',
+       y='GDP per capita')
+
+# Produce jittered points of GDP per capita for Asia and Europe over the years.
+gapminder %>% 
+  group_by(year) %>% 
+  filter(continent==c("Asia", "Europe")) %>% 
+  ggplot(aes(x=year, y=gdpPercap)) +
+  geom_jitter(position=position_jitter(width=0.2), alpha=0.5) + 
+  stat_summary(fun.y=max, color='red', geom='point', size=2, alpha=0.4) +
+  stat_summary(fun.y=min, color='yellow', geom='point', size=2, alpha=0.4) +
+  labs(title='Jittered Plot for Asia and Europe') +
+  facet_wrap(~continent)
+
+```
+
+The boxplot shows that Europe has the widest IQR and Oceania has the narrowest. However, standard deviation of Asia is much greater than that of Europe. It can be seen from the boxplot that Asia has the most evident and extreme outliers. Since IQR is more robust under the influence of outliers than standard deviation, IQR is a better chioce for evaluating the spread of GDP per capita considering the distribution is skewed with outliers. The spread is more apparent when a jittered plot is used. Due to the presence of outliers, datapoints of Asia are more distant from the mean, while for Europe the points are more evenly dispersed within a wider range. Therefore, GDP per capita for Europe is more spread out than Asia.
+
