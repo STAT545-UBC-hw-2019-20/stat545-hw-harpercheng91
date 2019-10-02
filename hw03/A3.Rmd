@@ -53,7 +53,7 @@ t1 %>%
 
 ```
 
-The number of countries with low life expectancy for Africa and Asia have been declining over the year, however, Africa still remains to be the continent with the most abundant countries below worldwide life expectancy. The statistic for Europe is very stable without any changes, while it fluctuated to some extent but has an overall decreasing trend for America. There was no countries in Oceania below worldwide life expectancy during the given years. Overall, less countries are below average life expectancy in recent years, indicating a change in the distribution of worldwide life expectancy. The bubble plot shows that Africa and Asia have greater number of such countries. And the general trend of life expectancy for each continent is increasing. 
+The number of countries with low life expectancy in Africa and Asia has been declining over the year, however, Africa still remains to be the continent with the most abundant countries below worldwide life expectancy. The statistic for Europe is very stable without any changes, while for America it fluctuated to some extent but has an overall decreasing trend. There were no countries in Oceania below worldwide life expectancy during the given years. Overall, less countries are below average life expectancy in recent years, indicating a change in the distribution of worldwide life expectancy. The bubble plot shows that Africa and Asia have greater number of such countries. And the general trend of life expectancy for each continent is increasing. 
 
 
 ## Task Option 2
@@ -115,5 +115,5 @@ gapminder %>%
 
 ```
 
-The boxplot shows that Europe has the widest IQR and Oceania has the narrowest. However, standard deviation of Asia is much greater than that of Europe. It can be seen from the boxplot that Asia has the most evident and extreme outliers. Since IQR is more robust under the influence of outliers than standard deviation, IQR is a better chioce for evaluating the spread of GDP per capita considering the distribution is skewed with outliers. The spread is more apparent when a jittered plot is used. Due to the presence of outliers, datapoints of Asia are more distant from the mean, while for Europe the points are more evenly dispersed within a wider range. Therefore, GDP per capita for Europe is more spread out than Asia.
+The boxplot shows that Europe has the widest IQR and Oceania has the narrowest. However, standard deviation of Asia is much greater than that of Europe. It can be seen from the boxplot that Asia has the most evident and extreme outliers. Since IQR is more robust under the influence of outliers than standard deviation, IQR is a better chioce for evaluating the spread of GDP per capita considering the distribution is skewed with outliers. The spread is more apparent when a jittered plot is used. Due to the presence of outliers, data points of Asia are more distant from the mean, while for Europe the points are more evenly dispersed within a wider range. Therefore, GDP per capita for Europe is more spread out than Asia.
 
