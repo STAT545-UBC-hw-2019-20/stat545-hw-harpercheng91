@@ -1,0 +1,106 @@
+---
+title: "STAT545 Assignment 4"
+author: "Harper Cheng"
+date: "10/2/2019"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load libraries and dataset
+```{r, warning=FALSE, message=FALSE}
+library(gapminder)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(readr)
+```
+
+
+# Exercise 1: Univariate Data Reshaping
+
+### Univariate Option 1
+
+1. Make a tibble with one row per year, and columns for life expectancy for two or more countries.
+```{r}
+dat1 <- gapminder %>% 
+  pivot_wider(id_cols=year, 
+              names_from=country,
+              values_from=lifeExp)
+dat1 %>% DT::datatable()
+```
+
+2. Take advantage of this new data shape to scatterplot life expectancy for one country against that of another.
+```{r}
+dat1 %>%
+  ggplot(aes(x=Afghanistan, y=Albania)) +
+  geom_point(size=3, color='blue') +
+  labs(title='A Scatterplot of Life Expectancy for Albania and Afghanistan') +
+  theme_bw()
+```
+
+3. Re-lengthen the data.
+```{r}
+dat1 %>% 
+  pivot_longer(cols=-year,
+               names_to="country",
+               values_to="lifeExp") %>% 
+  arrange(country) %>% 
+  DT::datatable()
+```
+
+
+# Exercise 2: Multivariate Data Reshaping
+
+### Multivariate Option 1
+
+1. Make a tibble with one row per year, and columns for life expectancy and GDP per capita for two or more countries.
+```{r}
+dat2 <- gapminder %>% 
+  filter(country %in% c("Afghanistan", "Albania")) %>% 
+  pivot_wider(id_cols=year,
+              names_from=country,
+              names_sep="_",
+              values_from=c(lifeExp, gdpPercap))
+dat2 %>% DT::datatable()
+```
+
+2. Re-lengthen the data.
+```{r}
+dat2 %>% 
+  pivot_longer(cols=-year,
+               names_to=c(".value", "country"),
+               names_sep="_") %>% 
+  DT::datatable()
+```
+
+
+# Exercise 3: Table Joins
+
+*Read in the made-up wedding guestlist and email addresses using the following lines. Then, complete the following tasks using the tidyverse (tidyr, dplyr, …). No need to do any pivoting – feel free to leave guest in its current format.*
+```{r, include=FALSE}
+guest <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/attend.csv")
+email <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/emails.csv")
+```
+
+1. For each guest in the guestlist (`guest` tibble), add a column for email address, which can be found in the `email` tibble.
+```{r}
+
+```
+
+2. Who do we have emails for, yet are not on the guestlist?
+```{r}
+
+```
+
+3. Make a guestlist that includes everyone we have emails for (in addition to those on the original guestlist).
+```{r}
+
+```
+
+
+
