@@ -1,6 +1,6 @@
 [Here is the rendered HTML](https://stat545-ubc-hw-2019-20.github.io/stat545-hw-harpercheng91/hw05/A5.html)
 
-:exclamation: Upon reviewing my code, I detected a typo for excercise 2.1 :exclamation:
+:exclamation: Upon reviewing my code, I detected a **typo** in excercise 2.1 :exclamation:
 ```
 # Check the number of factors/levels for `continent` in the `africa_asia` subset.
 ```
